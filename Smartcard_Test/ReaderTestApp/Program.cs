@@ -63,20 +63,21 @@ namespace ReaderTestApp
         static void reader_CardInserted(object sender, CardInsertedArgs args)
         {
             Console.WriteLine("A card has been inserted in reader [" + args.Reader + "]");
-            PostAlgoAqui(new Models.SendNFC
-            {
-                Mensagem = "Fala Pablo!"
-            });
-            Console.WriteLine(configurado);
+            
 
-            var cmd = new APDUCommand(0xFF, 0xB0, 0x00, 0x00, null, (byte) 255);
+            var cmd = new APDUCommand(0xFF, 0xB0, 0x00, 0x03, null, (byte) 255);
             var response = args.Card.Transmit(cmd);
 
             if (response.Data != null)
+            {
                 Console.WriteLine(Encoding.ASCII.GetString(response.Data));
-               
-            // HttpResponseMessage response = await client.PostAsync(uri.ToString(), new StringContent(WebUtility.HtmlEncode("{'teste': 20}"), Encoding.UTF8, "application/json"));
+                PostAlgoAqui(new Models.SendNFC
+                {
+                    Leitor = args.Reader,
+                    Leitura = Encoding.UTF8.GetString(response.Data)
 
+                });
+            }
             args.Card.Disconnect(DISCONNECT.Leave);
         }
 

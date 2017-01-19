@@ -7,7 +7,8 @@ namespace ReaderTestApp.Models
 {
     public class SendNFC
     {
-        public string Mensagem { get; set; }
+        public string Leitor { get; set; }
+        public string Leitura { get; set; }
 
 
 
